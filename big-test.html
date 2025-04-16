@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page with Multiple Elements</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+    
+    <!-- CSS Library (Bootstrap) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    
+    <style>
+        .image-container {
+            min-height: 300px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .validation-message {
+            color: red;
+            font-size: 0.8rem;
+            height: 20px;
+        }
+        
+        section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        h2 {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Test Page with Multiple Elements</h1>
+        
+        <!-- JS Alert Section -->
+        <section id="alert-section">
+            <h2>JavaScript Alerts</h2>
+            <div class="d-flex gap-2">
+                <button id="alert-btn" class="btn btn-primary" aria-label="Show standard alert">Standard Alert</button>
+                <button id="confirm-btn" class="btn btn-info" aria-label="Show confirmation dialog">Confirm Dialog</button>
+                <button id="prompt-btn" class="btn btn-warning" aria-label="Show prompt dialog">Prompt Dialog</button>
+            </div>
+            <div id="alert-result" class="mt-3"></div>
+        </section>
+        
+        <!-- ARIA Labels Section -->
+        <section id="aria-section">
+            <h2>ARIA Labels Examples</h2>
+            <div class="mb-3">
+                <button aria-label="Close dialog" class="btn btn-secondary">
+                    <span aria-hidden="true">✕</span>
+                </button>
+                <span class="ms-2">Button with aria-label</span>
+            </div>
+            <div class="mb-3">
+                <label id="search-label">Search:</label>
+                <input type="text" aria-labelledby="search-label" class="form-control" placeholder="Search term...">
+            </div>
+            <div role="alert" aria-live="assertive" class="alert alert-info">
+                This is an ARIA live region that announces dynamic content changes
+            </div>
+        </section>
+        
+        <!-- Lazy Loading Section -->
+        <section id="lazy-loading-section">
+            <h2>Lazy Loading Images</h2>
+            <p>Scroll down to see lazy-loaded images appear</p>
+            
+            <div class="image-container mb-3">
+                <!-- This image loads immediately -->
+                <img src="/api/placeholder/400/300" alt="Regular loaded image" width="400" height="300">
+            </div>
+            
+            <div class="image-container mb-3">
+                <!-- This image will lazy load -->
+                <img src="/api/placeholder/400/300" alt="First lazy-loaded image" width="400" height="300" loading="lazy">
+            </div>
+            
+            <div class="image-container mb-3">
+                <!-- This image will lazy load -->
+                <img src="/api/placeholder/400/300" alt="Second lazy-loaded image" width="400" height="300" loading="lazy">
+            </div>
+        </section>
+        
+        <!-- Form Validation Section -->
+        <section id="form-validation-section">
+            <h2>Form Validation</h2>
+            <form id="validation-form" novalidate>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" required aria-describedby="email-validation">
+                    <div id="email-validation" class="validation-message"></div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" required minlength="8" aria-describedby="password-validation">
+                    <div id="password-validation" class="validation-message"></div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" min="18" max="120" aria-describedby="age-validation">
+                    <div id="age-validation" class="validation-message"></div>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="terms" required aria-describedby="terms-validation">
+                    <label class="form-check-label" for="terms">I agree to the terms</label>
+                    <div id="terms-validation" class="validation-message"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+            <div id="form-result" class="mt-3"></div>
+        </section>
+    </div>
+
+    <!-- JavaScript Library (Bootstrap & jQuery) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // JavaScript Alerts
+        document.getElementById('alert-btn').addEventListener('click', function() {
+            alert('This is a standard alert');
+            document.getElementById('alert-result').textContent = 'Alert was displayed';
+        });
+        
+        document.getElementById('confirm-btn').addEventListener('click', function() {
+            const result = confirm('Do you want to proceed?');
+            document.getElementById('alert-result').textContent = `Confirm result: ${result}`;
+        });
+        
+        document.getElementById('prompt-btn').addEventListener('click', function() {
+            const name = prompt('Please enter your name', '');
+            if (name) {
+                document.getElementById('alert-result').textContent = `Hello, ${name}!`;
+            } else {
+                document.getElementById('alert-result').textContent = 'No name provided';
+            }
+        });
+        
+        // Form Validation
+        const form = document.getElementById('validation-form');
+        
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        function validateField(field, validationElement, customValidation) {
+            let isValid = field.validity.valid;
+            let message = '';
+            
+            if (field.validity.valueMissing) {
+                message = 'This field is required';
+                isValid = false;
+            } else if (customValidation) {
+                const customResult = customValidation(field.value);
+                if (!customResult.isValid) {
+                    message = customResult.message;
+                    isValid = false;
+                }
+            } else if (field.validity.typeMismatch) {
+                message = `Please enter a valid ${field.type}`;
+                isValid = false;
+            } else if (field.validity.tooShort) {
+                message = `Minimum length is ${field.minLength}`;
+                isValid = false;
+            } else if (field.validity.rangeUnderflow) {
+                message = `Minimum value is ${field.min}`;
+                isValid = false;
+            } else if (field.validity.rangeOverflow) {
+                message = `Maximum value is ${field.max}`;
+                isValid = false;
+            }
+            
+            validationElement.textContent = message;
+            
+            if (isValid) {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+            } else {
+                field.classList.remove('is-valid');
+                field.classList.add('is-invalid');
+            }
+            
+            return isValid;
+        }
+        
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const age = document.getElementById('age');
+            const terms = document.getElementById('terms');
+            
+            const isEmailValid = validateField(email, document.getElementById('email-validation'), (value) => {
+                if (!validateEmail(value)) {
+                    return { isValid: false, message: 'Please enter a valid email address' };
+                }
+                return { isValid: true };
+            });
+            
+            const isPasswordValid = validateField(password, document.getElementById('password-validation'));
+            
+            const isAgeValid = validateField(age, document.getElementById('age-validation'));
+            
+            const isTermsValid = validateField(terms, document.getElementById('terms-validation'));
+            
+            if (isEmailValid && isPasswordValid && isAgeValid && isTermsValid) {
+                document.getElementById('form-result').innerHTML = `
+                    <div class="alert alert-success" role="alert">
+                        Form submitted successfully!
+                    </div>
+                `;
+                form.reset();
+                form.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
+            } else {
+                document.getElementById('form-result').innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Please fix the errors in the form.
+                    </div>
+                `;
+            }
+        });
+        
+        // Add real-time validation
+        ['email', 'password', 'age', 'terms'].forEach(id => {
+            const element = document.getElementById(id);
+            element.addEventListener('input', function() {
+                validateField(
+                    element, 
+                    document.getElementById(`${id}-validation`),
+                    id === 'email' ? (value) => {
+                        if (!validateEmail(value)) {
+                            return { isValid: false, message: 'Please enter a valid email address' };
+                        }
+                        return { isValid: true };
+                    } : null
+                );
+            });
+        });
+    </script>
+</body>
+</html>
